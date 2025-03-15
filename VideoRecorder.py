@@ -3,8 +3,8 @@ import datetime
 
 # --- 전역 변수 (flip/crop 관련) ---
 flip_enabled = False            # 오른쪽 화살표로 토글
-crop_select_mode = False        # z 키로 crop 선택 모드 활성화
-confirmed_crop_rect = None      # 최종 crop 영역 (x, y, w, h) (None이면 전체 프레임 사용)
+crop_select_mode = False        # z 키로 crop 선택 모드 활성화/해제
+confirmed_crop_rect = None      # 최종 crop 영역 (None이면 전체 프레임 사용)
 mouse_xy = (0, 0)               # 현재 마우스 위치
 
 # crop zoom 박스 관련 설정 (영역 크기는 반경 단위)
@@ -116,26 +116,18 @@ while True:
             target.open(target_file, cv.VideoWriter_fourcc(*target_fourcc), fps, (rec_w, rec_h), is_color)
             assert target.isOpened(), 'Cannot open the given video, ' + target_file + '.'
             print("Recording started:", target_file)
-    elif key == ord('x'):  # x 키로 좌우반전
+    elif key == ord('x'):  # x 키로 좌우반전 토글
         flip_enabled = not flip_enabled
         print("Flip mode:", "ON" if flip_enabled else "OFF")
     elif key == ord('z'):
-        # z 키를 눌렀을 때 crop 선택 모드 토글 또는 확정
-        if not crop_select_mode:
-            # crop 선택 모드 시작: zoom 박스로 원하는 영역 미리보기
-            crop_select_mode = True
-            confirmed_crop_rect = None  # 기존 crop 영역 초기화
-            print("Crop selection mode enabled. Move mouse to select crop region, then press 'z' again to confirm.")
-        else:
-            # crop 선택 모드가 활성 중인 상태에서 z 키를 누르면 현재 마우스 위치의 영역을 최종 crop 영역으로 확정
-            # 최종 crop 영역은 현재 마우스 위치를 중심으로 zoom_box_radius 크기의 영역
-            x = mouse_xy[0] - zoom_box_radius
-            y = mouse_xy[1] - zoom_box_radius
-            w = zoom_box_radius * 2
-            h = zoom_box_radius * 2
-            confirmed_crop_rect = (x, y, w, h)
+        # z 키를 눌렀을 때 crop 선택 모드 토글 (두 번째 누르면 해제)
+        if crop_select_mode:
             crop_select_mode = False
-            print("Crop region confirmed:", confirmed_crop_rect)
+            confirmed_crop_rect = None  # crop 영역 적용 취소 (전체 프레임 사용)
+            print("Crop mode disabled.")
+        else:
+            crop_select_mode = True
+            print("Crop mode enabled. Use mouse to preview crop region; press 'z' again to cancel crop.")
     # 녹화 중이면 기록 (녹화 파일에는 오버레이나 zoom 박스 없이 원본 변환된 프레임 기록)
     if recording:
         target.write(frame_transformed)
