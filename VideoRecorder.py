@@ -8,7 +8,7 @@ confirmed_crop_rect = None      # 최종 crop 영역 (None이면 전체 프레�
 mouse_xy = (0, 0)               # 현재 마우스 위치
 
 # crop zoom 박스 관련 설정 (영역 크기는 반경 단위)
-zoom_level = 10                 # 확대 배율
+zoom_level = 5                 # 확대 배율
 zoom_box_radius = 20            # crop할 영역의 반경 (픽셀 단위)
 zoom_box_margin = 10            # zoom 박스를 붙일 위치 여백
 
