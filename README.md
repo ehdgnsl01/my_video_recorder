@@ -16,3 +16,5 @@ SpaceBar : 녹화 모드 ( 빨간 테두리가 생김 ) <br><br>
 'x' 키 : 좌우반전 <br><br>
 <img src="https://github.com/user-attachments/assets/20cbe6f6-0a92-41a7-b85c-a75a7cd4d14b" height=200>
 <img src="https://github.com/user-attachments/assets/253da34c-f075-454a-a718-7c006d978562" height=200>
+
+'Esc' 키 : 종료.
